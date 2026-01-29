@@ -5,25 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IPA Keyboard</title>
   <!-- SVG Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%2300A5A9'/><text x='50%' y='50%' dominant-baseline='central' text-anchor='middle' fill='white' font-size='70' font-family='sans-serif' font-weight='900'>ə</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23F88669'/><text x='50%' y='50%' dominant-baseline='central' text-anchor='middle' fill='%2300A5A9' font-size='85' font-family='sans-serif' font-weight='900'>ə</text></svg>">
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="importmap">
   {
     "imports": {
       "react": "https://esm.sh/react@19.0.0",
-      "react-dom": "https://esm.sh/react-dom@19.0.0/client",
+      "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
       "htm": "https://esm.sh/htm@3.1.1"
     }
   }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+    /* Inter for UI, Charis SIL for IPA symbols */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Charis+SIL:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+    
     body { 
       font-family: 'Inter', sans-serif; 
       background-color: #f8fafc; 
       color: #0f172a; 
     }
+
+    /* Specialized class for IPA characters using Charis SIL */
+    .ipa-font {
+      font-family: 'Charis SIL', serif;
+    }
+
     .char-btn { 
       transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); 
       user-select: none;
@@ -39,9 +47,19 @@
       transform: translateY(0); 
       scale: 0.95; 
     }
+    
     textarea { 
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; 
+      font-family: 'Charis SIL', serif; 
+      line-height: 1.5 !important;
     }
+
+    /* Target placeholder to use the main UI font (Inter) instead of IPA font */
+    textarea::placeholder {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      color: #e2e8f0; /* slate-200 */
+    }
+
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     
     /* Custom brand colors */
@@ -61,7 +79,7 @@
 
   <script type="module">
     import React, { useState, useRef, useEffect } from 'react';
-    import { createRoot } from 'react-dom';
+    import { createRoot } from 'react-dom/client';
     import htm from 'htm';
 
     const html = htm.bind(React.createElement);
@@ -88,8 +106,7 @@
       ],
       "Diacritics": [
         'ˈ', 'ˌ', 'ː', 'ˑ', 'ʼ', '˘', '◌̥', '◌̬', '◌ʰ', '◌̹', '◌̜', '◌̟', '◌̠', '◌̈', '◌̽', '◌̩', '◌̯', '◌˞', '◌̤', '◌̰', '◌̼', '◌̪', '◌̺', '◌̻', '◌̃', '◌ⁿ', '◌ˡ', '◌̚',
-        '◌̋', '◌́', '◌̄', '◌̀', '◌̏', '◌̌', '◌̂', '◌᷄', '◌᷅', '◌᷈',
-        '‿', '↗', '↘'
+        '◌̋', '◌́', '◌̄', '◌̀', '◌̏', '◌̌', '◌̂', '◌᷄', '◌᷅', '◌᷈', '◌͡', '◌͜'
       ]
     };
 
@@ -123,8 +140,10 @@
           setText(nextVal);
           const newPos = selectionStart + clean.length;
           setTimeout(() => {
-            textareaRef.current.focus();
-            textareaRef.current.setSelectionRange(newPos, newPos);
+            if (textareaRef.current) {
+              textareaRef.current.focus();
+              textareaRef.current.setSelectionRange(newPos, newPos);
+            }
           }, 0);
         } else {
           setText(prev => prev + clean);
@@ -166,8 +185,8 @@
                 <textarea
                   ref=${textareaRef}
                   value=${text}
-                  onChange=${(e) => setText(e.target.value)}
-                  className="w-full h-48 md:h-64 p-8 text-3xl md:text-4xl focus:outline-none resize-none leading-relaxed text-slate-900 placeholder:text-slate-200"
+                  onInput=${(e) => setText(e.target.value)}
+                  className="ipa-font w-full h-48 md:h-64 p-8 text-3xl md:text-4xl focus:outline-none resize-none leading-relaxed text-slate-900"
                   placeholder="Insert symbols..."
                 />
                 <div className="bg-slate-50/50 px-8 py-4 border-t border-slate-100 flex justify-between items-center">
@@ -194,7 +213,7 @@
                       <button 
                         key=${char} 
                         onClick=${() => insert(char)} 
-                        className="char-btn min-w-[3.5rem] h-14 px-3 bg-white border border-slate-200 rounded-2xl text-2xl md:text-3xl font-medium shadow-sm flex items-center justify-center"
+                        className="ipa-font char-btn min-w-[3.5rem] h-14 px-3 bg-white border border-slate-200 rounded-2xl text-2xl md:text-3xl font-medium shadow-sm flex items-center justify-center"
                       >
                         ${char}
                       </button>
@@ -217,8 +236,11 @@
       `;
     };
 
-    const root = createRoot(document.getElementById('root'));
-    root.render(React.createElement(App));
+    const rootElement = document.getElementById('root');
+    if (rootElement) {
+      const root = createRoot(rootElement);
+      root.render(React.createElement(App));
+    }
   </script>
 </body>
 </html>

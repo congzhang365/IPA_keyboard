@@ -4,6 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZY2SFQV9D"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8ZY2SFQV9D');
+  </script>
+
   <!-- SEO Primary Tags -->
   <title>IPA Keyboard | International Phonetic Alphabet Input Tool</title>
   <meta name="description" content="A high-fidelity, professional IPA Keyboard for linguists, students, and teachers. Easily type International Phonetic Alphabet symbols for phonetics exams and research." />
@@ -22,7 +31,7 @@
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://congzhang365.github.io/IPA_keyboard/" />
   <meta property="twitter:title" content="IPA Keyboard | Professional Phonetic Entry Tool" />
-  <meta property="twitter:description" content="Type International Phonetic Alphabet symbols easily with this organized, high-fidelity keyboard." />
+  <meta property="twitter:description" content="Type International Phonetic Alphabet symbols easily with this keyboard." />
   <meta property="twitter:image" content="https://congzhang365.github.io/IPA_keyboard/assets/ipa-preview.png" />
 
   <!-- Structured Data (JSON-LD) for Google -->
@@ -33,7 +42,7 @@
     "name": "IPA Keyboard",
     "operatingSystem": "Web",
     "applicationCategory": "EducationalApplication",
-    "description": "An organized tool for typing International Phonetic Alphabet symbols.",
+    "description": "A tool for typing International Phonetic Alphabet symbols.",
     "author": {
       "@type": "Person",
       "name": "Cong Zhang"
@@ -151,44 +160,6 @@
       ]
     };
 
-    const VisitorBadge = () => {
-      const [count, setCount] = useState(null);
-      const namespace = 'congzhang365';
-      const key = 'ipa-keyboard';
-      const statsUrl = `https://api.counterapi.dev/v1/${namespace}/${key}`;
-
-      useEffect(() => {
-        const fetchCount = async () => {
-          try {
-            const response = await fetch(`${statsUrl}/increment`);
-            const data = await response.json();
-            if (data && data.count) {
-              setCount(data.count);
-            }
-          } catch (err) {
-            console.error('Failed to fetch global count:', err);
-            setCount('--');
-          }
-        };
-        
-        fetchCount();
-      }, []);
-
-      return html`
-        <a 
-          href=${statsUrl} 
-          target="_blank" 
-          title="Click to view live stats"
-          className="flex items-center text-[10px] font-bold tracking-tight rounded-md overflow-hidden shadow-sm border border-slate-200 transition hover:opacity-80 active:scale-95"
-        >
-          <div className="bg-[#00A5A9] text-white px-2 py-1 uppercase">Visits</div>
-          <div className="bg-[#F88669] text-white px-2 py-1 min-w-[30px] text-center">
-            ${count === null ? '...' : count.toLocaleString()}
-          </div>
-        </a>
-      `;
-    };
-
     const App = () => {
       const [text, setText] = useState('');
       const textareaRef = useRef(null);
@@ -227,7 +198,7 @@
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
               <div>
                 <h1 className="text-4xl font-black text-slate-900 tracking-tighter">IPA Keyboard</h1>
-                <p className="text-slate-500 font-medium tracking-tight">An organized International Phonetic Alphabet keyboard</p>
+                <p className="text-slate-500 font-medium tracking-tight">A randomised International Phonetic Alphabet keyboard</p>
               </div>
               <div className="flex gap-2 w-full md:w-auto">
                 <button 
@@ -292,9 +263,6 @@
             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-300 text-center px-4">
               Phonetic Input Tool • Perfect for digital phonetics exams
             </p>
-            <div className="opacity-40 hover:opacity-100 transition-opacity duration-300 transform scale-75 md:scale-90">
-              <${VisitorBadge} />
-            </div>
           </footer>
         </div>
       `;
@@ -308,4 +276,3 @@
   </script>
 </body>
 </html>
-

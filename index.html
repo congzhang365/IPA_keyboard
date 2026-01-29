@@ -153,12 +153,14 @@
 
     const VisitorBadge = () => {
       const [count, setCount] = useState(null);
+      const namespace = 'congzhang365';
+      const key = 'ipa-keyboard';
+      const statsUrl = `https://api.counterapi.dev/v1/${namespace}/${key}`;
 
       useEffect(() => {
-        // Using congzhang365 as the unique namespace
         const fetchCount = async () => {
           try {
-            const response = await fetch('https://api.counterapi.dev/v1/congzhang365/ipa-keyboard/increment');
+            const response = await fetch(`${statsUrl}/increment`);
             const data = await response.json();
             if (data && data.count) {
               setCount(data.count);
@@ -173,12 +175,17 @@
       }, []);
 
       return html`
-        <div className="flex items-center text-[10px] font-bold tracking-tight rounded-md overflow-hidden shadow-sm border border-slate-200">
-          <div className="bg-[#00A5A9] text-white px-2 py-1 uppercase">Visits</div>
+        <a 
+          href=${statsUrl} 
+          target="_blank" 
+          title="Click to view live stats"
+          className="flex items-center text-[10px] font-bold tracking-tight rounded-md overflow-hidden shadow-sm border border-slate-200 transition hover:opacity-80 active:scale-95"
+        >
+          <div className="bg-[#00A5A9] text-white px-2 py-1 uppercase">Total Visits</div>
           <div className="bg-[#F88669] text-white px-2 py-1 min-w-[30px] text-center">
             ${count === null ? '...' : count.toLocaleString()}
           </div>
-        </div>
+        </a>
       `;
     };
 
@@ -283,7 +290,7 @@
 
           <footer className="mt-20 py-10 border-t border-slate-100 w-full flex flex-col items-center gap-6">
             <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-300 text-center px-4">
-              Phonetic Input Tool • Perfect for digital phonetics exams
+              Phonetic Input Tool • Perfect for digital phonetics exams and linguistic research
             </p>
             <div className="opacity-40 hover:opacity-100 transition-opacity duration-300 transform scale-75 md:scale-90">
               <${VisitorBadge} />

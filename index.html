@@ -3,9 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IPA Keyboard</title>
-  <!-- SVG Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23F88669'/><text x='50%' y='50%' dominant-baseline='central' text-anchor='middle' fill='%2300A5A9' font-size='85' font-family='sans-serif' font-weight='900'>ə</text></svg>">
+  
+  <!-- SEO Primary Tags -->
+  <title>IPA Keyboard | International Phonetic Alphabet Input Tool</title>
+  <meta name="description" content="A high-fidelity, professional IPA Keyboard for linguists, students, and teachers. Easily type International Phonetic Alphabet symbols for phonetics exams and research." />
+  <meta name="keywords" content="IPA Keyboard, International Phonetic Alphabet, phonetics tool, linguistic symbols, phonetic transcription, online IPA keyboard, Newcastle University" />
+  <meta name="author" content="Cong Zhang" />
+  <link rel="canonical" href="https://congzhang-linguist.github.io/ipa-keyboard/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://congzhang-linguist.github.io/ipa-keyboard/" />
+  <meta property="og:title" content="IPA Keyboard | Professional Phonetic Entry Tool" />
+  <meta property="og:description" content="The cleanest online IPA keyboard for typing phonetic symbols. Perfect for students and professional linguists." />
+  <meta property="og:image" content="https://congzhang-linguist.github.io/assets/ipa-preview.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://congzhang-linguist.github.io/ipa-keyboard/" />
+  <meta property="twitter:title" content="IPA Keyboard | Professional Phonetic Entry Tool" />
+  <meta property="twitter:description" content="Type International Phonetic Alphabet symbols easily with this organized, high-fidelity keyboard." />
+  <meta property="twitter:image" content="https://congzhang-linguist.github.io/assets/ipa-preview.png" />
+
+  <!-- Structured Data (JSON-LD) for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "IPA Keyboard",
+    "operatingSystem": "Web",
+    "applicationCategory": "EducationalApplication",
+    "description": "An organized tool for typing International Phonetic Alphabet symbols.",
+    "author": {
+      "@type": "Person",
+      "name": "Cong Zhang"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- SVG Favicon: Schwa is now white and larger (font-size 95) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23F88669'/><text x='50%' y='55%' dominant-baseline='central' text-anchor='middle' fill='white' font-size='95' font-family='sans-serif' font-weight='900'>ə</text></svg>">
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="importmap">
@@ -53,11 +95,12 @@
       line-height: 1.5 !important;
     }
 
-    /* Target placeholder to use the main UI font (Inter) instead of IPA font */
+    /* Updated placeholder styling: smaller font and lighter color */
     textarea::placeholder {
       font-family: 'Inter', sans-serif;
       font-weight: 500;
-      color: #e2e8f0; /* slate-200 */
+      font-size: 0.65em;
+      color: #f1f5f9; /* slate-100 */
     }
 
     .scrollbar-hide::-webkit-scrollbar { display: none; }
@@ -161,7 +204,7 @@
 
       return html`
         <div className="min-h-screen p-4 md:p-12 flex flex-col items-center">
-          <div className="w-full max-w-5xl space-y-8">
+          <main className="w-full max-w-5xl space-y-8">
             
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
               <div>
@@ -171,6 +214,7 @@
               <div className="flex gap-2 w-full md:w-auto">
                 <button 
                   onClick=${copyToClipboard} 
+                  aria-label="Copy phonetic text to clipboard"
                   style=${{ backgroundColor: '#F88669' }}
                   className="w-full md:w-auto px-10 py-3 text-white font-bold rounded-2xl shadow-lg shadow-orange-100 hover:brightness-110 active:brightness-90 active:shadow-none transition-all"
                 >
@@ -179,13 +223,14 @@
               </div>
             </header>
 
-            <div className="relative group">
+            <section className="relative group" aria-label="Text Input Area">
               <div className="absolute -inset-1 bg-gradient-to-r from-orange-100 to-teal-100 rounded-[2.5rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
               <div className="relative bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden ring-1 ring-slate-100">
                 <textarea
                   ref=${textareaRef}
                   value=${text}
                   onInput=${(e) => setText(e.target.value)}
+                  aria-label="Insert IPA symbols here"
                   className="ipa-font w-full h-48 md:h-64 p-8 text-3xl md:text-4xl focus:outline-none resize-none leading-relaxed text-slate-900"
                   placeholder="Insert symbols..."
                 />
@@ -193,26 +238,27 @@
                   <div className="flex items-center gap-4">
                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">${text.length} Characters</span>
                     <span className="text-[10px] text-slate-200">|</span>
-                    <button onClick=${() => setText('')} className="text-[10px] font-black uppercase tracking-widest text-red-400 hover:text-red-600 transition">Clear</button>
+                    <button onClick=${() => setText('')} aria-label="Clear all text" className="text-[10px] font-black uppercase tracking-widest text-red-400 hover:text-red-600 transition">Clear</button>
                   </div>
                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
                     © 2026 <a href="https://congzhang-linguist.github.io/" target="_blank" style=${{ color: '#00A5A9' }} className="hover:underline">Cong Zhang</a> @ Newcastle University
                   </span>
                 </div>
               </div>
-            </div>
+            </section>
 
             <div className="space-y-12 bg-white rounded-[2rem] p-6 md:p-10 shadow-sm border border-slate-100">
               ${Object.entries(RAW_SYMBOLS).map(([group, list]) => html`
                 <section key=${group} className="space-y-4">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 border-l-2 pl-3" style=${{ color: '#00A5A9', borderColor: '#00A5A9' }}>
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4 border-l-2 pl-3" style=${{ color: '#00A5A9', borderColor: '#00A5A9' }}>
                     ${group}
-                  </h3>
+                  </h2>
                   <div className="flex flex-wrap gap-2 md:gap-3">
                     ${list.map(char => html`
                       <button 
                         key=${char} 
                         onClick=${() => insert(char)} 
+                        aria-label=${`Insert IPA symbol ${char}`}
                         className="ipa-font char-btn min-w-[3.5rem] h-14 px-3 bg-white border border-slate-200 rounded-2xl text-2xl md:text-3xl font-medium shadow-sm flex items-center justify-center"
                       >
                         ${char}
@@ -222,11 +268,11 @@
                 </section>
               `)}
             </div>
-          </div>
+          </main>
 
           <footer className="mt-20 py-10 border-t border-slate-100 w-full flex flex-col items-center gap-6">
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-300">
-              Phonetic Input Tool • Perfect for digital phonetics exams
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-300 text-center px-4">
+              Phonetic Input Tool • Perfect for digital phonetics exams and linguistic research
             </p>
             <div className="opacity-40 hover:opacity-100 transition-opacity duration-300 transform scale-75 md:scale-90">
               <${VisitorBadge} />

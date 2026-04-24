@@ -5,6 +5,8 @@
 The IPA Keyboard presents all symbols in a randomised layout, encouraging users to rely on their phonetic knowledge rather than recognition or memorised positions.  
 It is intentionally simple, uncluttered, and exam‑friendly.
 
+Access the keyboard here: https://congzhang365.github.io/IPA_keyboard/
+
 ## Key Features
 
 - **Randomised IPA symbols**  
